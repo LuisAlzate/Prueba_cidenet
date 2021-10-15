@@ -1,0 +1,6 @@
+
+public class Operaciones {
+	 String correo ;
+	 
+	 correo = ${primerNombre};
+}

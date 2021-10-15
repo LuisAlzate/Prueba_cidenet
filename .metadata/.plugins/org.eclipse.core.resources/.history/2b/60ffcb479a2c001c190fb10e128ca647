@@ -1,0 +1,98 @@
+package com.example.demo.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name= "Empleados")
+public class Empleado {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private long id;
+	
+	@Column(name="Primer_Apellido")
+	private String PrimerApellido;
+	
+	@Column(name="Segundo_nombre")
+	private String SegundoApellido;
+	
+	@Column(name="Primero_Nombre")
+	private String PrimerNombre;
+	
+	@Column(name="Segundo_Nombre")
+	private String SegundoNombre;
+	
+	@Column(name="Pais_Empleo")
+	private String PaisEmpleo;
+	
+	@Column(name="Identificacion")
+	private String Identificacion;
+	
+	@Column(name="NumeroIdenti")
+	private int NumeroIdenti;
+	
+	@Column(name="Correo")
+	private String Correo;
+	
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getPrimerApellido() {
+		return PrimerApellido;
+	}
+	public void setPrimerApellido(String primerApellido) {
+		PrimerApellido = primerApellido;
+	}
+	public String getSegundoApellido() {
+		return SegundoApellido;
+	}
+	public void setSegundoApellido(String segundoApellido) {
+		SegundoApellido = segundoApellido;
+	}
+	public String getPrimerNombre() {
+		return PrimerNombre;
+	}
+	public void setPrimerNombre(String primerNombre) {
+		PrimerNombre = primerNombre;
+	}
+	public String getSegundoNombre() {
+		return SegundoNombre;
+	}
+	public void setSegundoNombre(String segundoNombre) {
+		SegundoNombre = segundoNombre;
+	}
+	public String getPaisEmpleo() {
+		return PaisEmpleo;
+	}
+	public void setPaisEmpleo(String paisEmpleo) {
+		PaisEmpleo = paisEmpleo;
+	}
+	public String getIdentificacion() {
+		return Identificacion;
+	}
+	public void setIdentificacion(String identificacion) {
+		Identificacion = identificacion;
+	}
+	public int getNumeroIdenti() {
+		return NumeroIdenti;
+	}
+	public void setNumeroIdenti(int numeroIdenti) {
+		NumeroIdenti = numeroIdenti;
+	}
+	public String getCorreo() {
+		return Correo;
+	}
+	public void setCorreo(String correo) {
+		Correo = correo;
+	}
+	
+	
+}

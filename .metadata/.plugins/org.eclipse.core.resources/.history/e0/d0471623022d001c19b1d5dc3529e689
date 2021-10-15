@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Empleado</title>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+	integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+	crossorigin="anonymous">
+
+</head>
+<body>
+	<div class="container">
+		<h1>Empleado</h1>
+		<hr>
+		<h2>Guardar Empleado</h2>
+		<form action="#" th:action="@{guardarEmpleado}"
+			th:object="${empleado}" , method="POST">
+			<input type="text" th:field="*{primerApellido}"
+				placeholder="Primer Apellido" class="form-control mb-4"> <input
+				type="text" th:field="*{segundoApellido}"
+				placeholder="Segundo Apellido" class="form-control mb-4"> <input
+				type="text" th:field="*{primerNombre}" placeholder="Primer Nombre"
+				class="form-control mb-4"> <input type="text"
+				th:field="*{segundoNombre}" placeholder="Segundo Nombre"
+				class="form-control mb-4">
+			 <select class="form-control" th:field="*{paisEmpleo}" placeholder="Pais de empleo"
+				>
+				<option>Colombia</option>
+				<option>USA</option>
+			</select> <select class="form-control" th:field="*{identificacion}"
+				placeholder="Tipo de Identificacion" class="form-control mb-4">
+				<option>Cedula Ciudadania</option>
+				<option>Cedula Extranjeria</option>
+				<option>Pasaporte</option>
+				<option>Permiso Especial</option>
+			</select> <input type="text" th:field="*{numeroIdenti}"
+				placeholder="Numero de indentificacion" class="form-control mb-4">
+			<input type="text" th:field="*{correo}"
+				placeholder="Correo electronico" class="form-control mb-4">
+
+			<button type="submit" class="btn btn-info col-2">Guardar
+				empleado</button>
+		</form>
+	</div>
+</body>
+</html>
