@@ -1,6 +1,9 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,8 +23,8 @@ public class ControlEmpleado {
 	// Muestra la lista de empleados.
 	@GetMapping("/")
 	public String viewHomePage(Model model) {
-		model.addAttribute("listaEmpleados", servicioempleados.getAllEmpleado());
-		return "index";
+		return findPaginated(1,model);
+		
 	}
 
 	@GetMapping("/showNewEmployeeForm")
@@ -43,12 +46,40 @@ public class ControlEmpleado {
 	
 	@GetMapping("/showFormForUpdate/{id}")
 	public String showFormForUpdate(@PathVariable (value = "id") long id, Model model) {
+		
+		
 		//Obtengo los valores de los empleados desde el ServicioEmpleados
 		Empleado empleado = servicioempleados.getEmpleadoporId(id);
 		
 		//Se prellena el formulario con el modelo
 		model.addAttribute("empleado",empleado);
 		return "update_empleado";
+	}
+	
+	@GetMapping("/deleteEmpleado/{id}")	
+	public String deleteEmpleado(@PathVariable (value = "id")long id) {
+	
+		//Borrar empleado
+		
+		this.servicioempleados.deleteEmpleadoById(id);
+		return "redirect:/";
 		
 	}
+	
+	@GetMapping("/page/{pageNo}/")
+	public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
+		int pageSize =4;
+		
+		Page<Empleado> page = servicioempleados.findPaginated(pageNo, pageSize);
+		List<Empleado> listaEmpleados = page.getContent();
+		
+		model.addAttribute("currentPage", pageNo);
+		model.addAttribute("totalPages",page.getTotalPages());
+		model.addAttribute("totalItems",page.getTotalElements());
+		model.addAttribute("listaEmpleados",listaEmpleados);
+		
+		return "index";
+		
+	}
+	
 }
