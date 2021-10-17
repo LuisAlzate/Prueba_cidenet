@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 
 import com.example.demo.model.Empleado;
 import com.example.demo.repository.RepositorioEmpleados;
@@ -28,6 +30,11 @@ public class ServicioEmpleadolmpl implements ServicioEmpleado{
 	public void guardarEmpleado(Empleado empleado) {
 		this.repositorioempleados.save(empleado);
 	}
+	
+	@Override
+	public void guardarEmpleado2(Empleado empleado) {
+		this.repositorioempleados.save(empleado);
+	}
 
 	@Override
 	public Empleado getEmpleadoporId(long id) {
@@ -46,8 +53,11 @@ public class ServicioEmpleadolmpl implements ServicioEmpleado{
 	}
 
 	@Override
-	public Page<Empleado> findPaginated(int pageNo, int pageSize) {
-		Pageable pageable = PageRequest.of(pageNo - 1, pageSize);
+	public Page<Empleado> findPaginated(int pageNo, int pageSize,String sortField,String sortDirection) {
+		Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending():
+			Sort.by(sortField).descending();
+	
+		Pageable pageable = PageRequest.of(pageNo - 1, pageSize,sort);
 		return this.repositorioempleados.findAll(pageable);
 	}
 }

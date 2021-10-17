@@ -1,5 +1,9 @@
 package com.example.demo.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.model.Empleado;
 import com.example.demo.service.ServicioEmpleado;
@@ -23,7 +28,7 @@ public class ControlEmpleado {
 	// Muestra la lista de empleados.
 	@GetMapping("/")
 	public String viewHomePage(Model model) {
-		return findPaginated(1,model);
+		return findPaginated(1,"id","asc",model);
 		
 	}
 
@@ -35,13 +40,95 @@ public class ControlEmpleado {
 		return "new_empleado";
 	}
 	
+	
+	//Guardo empleado a la hora de crear uno nuevo, obtengo el correo y la hora de forma automatica.
 	@PostMapping("/guardarEmpleado")
 	public String guardarEmpleado(@ModelAttribute("empleado") Empleado empleado) {
 		//Guardo empleado a la base de datos
+		
+		//Declaro las variables con los valores necesarios para crear el correo electronico.
+		String nombre = empleado.getPrimerNombre();
+		String ape2 = empleado.getPrimerApellido();
+		String ape = ape2.replaceAll("\\s+", "");
+		String pais = empleado.getPaisEmpleo();
+		String correoJs;
+		
+		//Obtengo la hora de registro con las librerias de fecha
+		Date date = Calendar.getInstance().getTime();  
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
+		String strDate = dateFormat.format(date);  
+		strDate = "Actualizado el: "+dateFormat.format(date);
+		
+		
+		correoJs=nombre+ "." + ape+"."+empleado.getId();
+		//Valido tamaño del correo. (Por ahora el valor del string no puede ser menor al valor para cortarlo, tira error 500)
+//		if(correoJs.length()>10) {
+//			correoJs=correoJs.substring(0,10);
+//		}
+//		else {
+//			return correoJs;
+//		}		
+		//valido donde esta ubicado el empleado para generar el dominio correspondiente. 
+		if (pais.equals("Colombia")) {
+
+			correoJs = correoJs + "@cidenet.com.co";
+		} else {
+			correoJs = correoJs +"@cidenet.com.us";
+		}
+		
+			
+		empleado.setFechaHora(strDate);
+		empleado.setCorreo(correoJs);
+		
 		servicioempleados.guardarEmpleado(empleado);
+			
 		return "redirect:/";
 	}
 
+	
+	//Guarto empleado a la hora de actualizar.
+	@PostMapping("/guardarEmpleado2")
+	public String guardarEmpleado2(@ModelAttribute("empleado") Empleado empleado) {
+		//Guardo empleado a la base de datos
+		String nombre = empleado.getPrimerNombre();
+		String ape2 = empleado.getPrimerApellido();
+		String ape = ape2.replaceAll("\\s+", "");
+		String pais = empleado.getPaisEmpleo();
+		String correoJs;
+		
+		//Actualizo el correo en caso de ser necesario.
+		correoJs=nombre+ "." + ape+"."+empleado.getId();
+		//Valido tamaño del correo. (Por ahora el valor del string no puede ser menor al valor para cortarlo, tira error 500)
+//		if(correoJs.length()>10) {
+//			correoJs=correoJs.substring(0,10);
+//		}
+//		else {
+//			return correoJs;
+//		}
+		
+		//valido donde esta ubicado el empleado para generar el dominio correspondiente. 
+		if (pais.equals("Colombia")) {
+
+			correoJs = correoJs + "@cidenet.com.co";
+		} else {
+			correoJs = correoJs +"@cidenet.com.us";
+		}
+		
+		//Obtengo la hora de registro con las librerias de fecha
+		Date date = Calendar.getInstance().getTime();  
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
+		String strDate = dateFormat.format(date);  
+		//Especifico que es una actualizacion
+		strDate = "Actualizado el: "+dateFormat.format(date);
+				
+		
+		empleado.setFechaHora(strDate);
+		empleado.setCorreo(correoJs);
+		servicioempleados.guardarEmpleado2(empleado);
+				
+		return "redirect:/";
+		
+	}
 	
 	
 	@GetMapping("/showFormForUpdate/{id}")
@@ -67,15 +154,25 @@ public class ControlEmpleado {
 	}
 	
 	@GetMapping("/page/{pageNo}/")
-	public String findPaginated(@PathVariable(value = "pageNo") int pageNo, Model model) {
-		int pageSize =4;
+	public String findPaginated(@PathVariable(value = "pageNo") int pageNo, 
+			@RequestParam("sortField") String sortField,
+			@RequestParam("sortDir") String sortDir,
+			Model model) {
+		int pageSize =10;
 		
-		Page<Empleado> page = servicioempleados.findPaginated(pageNo, pageSize);
+		Page<Empleado> page = servicioempleados.findPaginated(pageNo, pageSize, sortField, sortDir);
 		List<Empleado> listaEmpleados = page.getContent();
 		
 		model.addAttribute("currentPage", pageNo);
 		model.addAttribute("totalPages",page.getTotalPages());
 		model.addAttribute("totalItems",page.getTotalElements());
+		
+		model.addAttribute("sortField", sortField);
+		model.addAttribute("sorDir",sortDir);
+		model.addAttribute("reverseSortDir",sortDir.equals("asc") ? "desc" : "asc");
+		
+		
+		
 		model.addAttribute("listaEmpleados",listaEmpleados);
 		
 		return "index";

@@ -10,9 +10,10 @@ public interface ServicioEmpleado {
 	
 	List<Empleado> getAllEmpleado();
 	void guardarEmpleado(Empleado empleado);
+	void guardarEmpleado2(Empleado empleado);
 	Empleado getEmpleadoporId(long id);
 	void deleteEmpleadoById(long id);
-	Page<Empleado> findPaginated(int pageNo, int pageSize);
-		
+	Page<Empleado> findPaginated(int pageNo, int pageSize, String sortField,String sortDirection);
+	
 	
 }

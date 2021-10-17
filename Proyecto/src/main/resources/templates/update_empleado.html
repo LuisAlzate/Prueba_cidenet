@@ -15,8 +15,11 @@
 		<hr>
 		<h2>Actualizar Empleado</h2>
 		
-		<form action="#" th:action="@{guardarEmpleado}"
+		<form action="#" th:action="@{/guardarEmpleado2}"
 			th:object="${empleado}" , method="POST">
+			<!-- Add hidden form field to handle update -->
+			<input type="hidden" th:field="*{id}" />
+			
 			<label>Primer Apellido</label>
 			<input type="text" th:field="*{primerApellido}"
 				placeholder="Primer Apellido" class="form-control mb-4" maxlength="20">
@@ -46,8 +49,8 @@
 			<input type="text" th:field="*{numeroIdenti}"
 			placeholder="Numero de indentificacion" class="form-control mb-4" maxlength="20">
 			<label>Correo</label>
-			<!-- <input type="text" th:field="*{correo}"
-				placeholder="Correo electronico" class="form-control mb-4" maxlength="20">-->
+			<input type="text" th:field="*{correo}"
+				placeholder="Correo electronico" class="form-control mb-4" maxlength="20" disabled=disabled>
 			<label>Fecha de ingreso</label>
 			<input type="date" th:field="*{fechaIn}"
 				placeholder="Fecha de ingreso" class="form-control mb-4">
@@ -62,10 +65,10 @@
 				<option value="Talento Humano">Talento Humano</option>
 				<option value="Servicios Varios">Infraesctructura</option>
 			</select> 
-			<label>Estado</label>
-			 <select class="form-control" th:field="*{estado}" placeholder="estado">
-				<option value="Activo">Activo</option>
-			</select> 
+<!-- 			<label>Estado</label> -->
+<!-- 			 <select class="form-control" th:field="*{estado}" placeholder="estado"> -->
+<!-- 				<option value="Activo">Activo</option> -->
+<!-- 			</select>  -->
 
 
 			<button type="submit" class="btn btn-info col-2">Guardar

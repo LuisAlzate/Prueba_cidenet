@@ -1,0 +1,21 @@
+//Generar nuevo correo de manera automatica
+const usrPrimerNombre = document.getElementById('PrimerNombre');
+const usrPrimerApellido = document.getElementById('PrimerApellido');
+const usrPais = document.getElementById('Pais');
+let correoJs = defaultResult;
+
+function crearCorreo(Nombre,Apellido,Pais){
+	const nom = `${usrPrimerNombre}` ;
+	const ape= `${usrPrimerApellido}`;
+	pais = ` ${usrPais}`;
+	
+	if (pais == "Colombia"){
+	
+		correoJs = nom +ape+"@cidenet.com.co"
+	}else
+	{
+		correoJs = nom +ape+"@cidenet.com.us"
+	}
+	
+
+}
