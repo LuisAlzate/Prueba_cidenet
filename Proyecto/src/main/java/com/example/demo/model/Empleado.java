@@ -15,41 +15,41 @@ public class Empleado {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@Column(name="Primer_Apellido")
-	private String PrimerApellido;
+	@Column(name="primer_Apellido")
+	private String primerApellido;
 	
-	@Column(name="Segundo_Apellido")
-	private String SegundoApellido;
+	@Column(name="segundo_Apellido")
+	private String segundoApellido;
 	
-	@Column(name="Primero_Nombre")
-	private String PrimerNombre;
+	@Column(name="primero_Nombre")
+	private String primerNombre;
 	
-	@Column(name="Segundo_Nombre")
-	private String SegundoNombre;
+	@Column(name="segundo_Nombre")
+	private String segundoNombre;
 	
-	@Column(name="Pais_Empleo")
-	private String PaisEmpleo;
+	@Column(name="pais_Empleo")
+	private String paisEmpleo;
 	
-	@Column(name="Identificacion")
-	private String Identificacion;
+	@Column(name="identificacion")
+	private String identificacion;
 	
-	@Column(name="NumeroIdenti")
-	private int NumeroIdenti;
+	@Column(name="numeroIdenti")
+	private String numeroIdenti;
 	
-	@Column(name="Correo")
-	private String Correo;
+	@Column(name="correo")
+	private String correo;
 	
-	@Column(name="Fecha_de_ingreso")
-	private String FechaIn;
+	@Column(name="fecha_de_ingreso")
+	private String fechaIn;
 	
-	@Column(name="Area")
-	private String Area;
+	@Column(name="area")
+	private String area;
 	
-	@Column(name="Estado")
-	private String Estado;
+	@Column(name="estado")
+	private String estado;
 	
-	@Column(name="FechaHora")
-	private String FechaHora;
+	@Column(name="fechaHora")
+	private String fechaHora;
 	
 	public long getId() {
 		return id;
@@ -58,76 +58,76 @@ public class Empleado {
 		this.id = id;
 	}
 	public String getPrimerApellido() {
-		return PrimerApellido;
+		return primerApellido;
 	}
 	public void setPrimerApellido(String primerApellido) {
-		PrimerApellido = primerApellido;
+		this.primerApellido = primerApellido;
 	}
 	public String getSegundoApellido() {
-		return SegundoApellido;
+		return segundoApellido;
 	}
 	public void setSegundoApellido(String segundoApellido) {
-		SegundoApellido = segundoApellido;
+		this.segundoApellido = segundoApellido;
 	}
 	public String getPrimerNombre() {
-		return PrimerNombre;
+		return primerNombre;
 	}
 	public void setPrimerNombre(String primerNombre) {
-		PrimerNombre = primerNombre;
+		this.primerNombre = primerNombre;
 	}
 	public String getSegundoNombre() {
-		return SegundoNombre;
+		return segundoNombre;
 	}
 	public void setSegundoNombre(String segundoNombre) {
-		SegundoNombre = segundoNombre;
+		this.segundoNombre = segundoNombre;
 	}
 	public String getPaisEmpleo() {
-		return PaisEmpleo;
+		return paisEmpleo;
 	}
 	public void setPaisEmpleo(String paisEmpleo) {
-		PaisEmpleo = paisEmpleo;
+		this.paisEmpleo = paisEmpleo;
 	}
 	public String getIdentificacion() {
-		return Identificacion;
+		return identificacion;
 	}
 	public void setIdentificacion(String identificacion) {
-		Identificacion = identificacion;
+		this.identificacion = identificacion;
 	}
-	public int getNumeroIdenti() {
-		return NumeroIdenti;
+	public String getNumeroIdenti() {
+		return numeroIdenti;
 	}
-	public void setNumeroIdenti(int numeroIdenti) {
-		NumeroIdenti = numeroIdenti;
+	public void setNumeroIdenti(String numeroIdenti) {
+		this.numeroIdenti = numeroIdenti;
 	}
 	public String getCorreo() {
-		return Correo;
+		return correo;
 	}
 	public void setCorreo(String correo) {
-		Correo = correo;
+		this.correo = correo;
 	}
 	public String getFechaIn() {
-		return FechaIn;
+		return fechaIn;
 	}
 	public void setFechaIn(String fechaIn) {
-		FechaIn = fechaIn;
+		this.fechaIn = fechaIn;
 	}
 	public String getArea() {
-		return Area;
+		return area;
 	}
 	public void setArea(String area) {
-		Area = area;
+		this.area = area;
 	}
 	public String getEstado() {
-		return Estado;
+		return estado;
 	}
 	public void setEstado(String estado) {
-		Estado = estado;
+		this.estado = estado;
 	}
 	public String getFechaHora() {
-		return FechaHora;
+		return fechaHora;
 	}
 	public void setFechaHora(String fechaHora) {
-		FechaHora = fechaHora;
+		this.fechaHora = fechaHora;
 	}
 
 	

@@ -1,0 +1,19 @@
+package com.example.demo.repository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.model.Empleado;
+
+@Repository
+public interface RepositorioEmpleados extends  JpaRepository<Empleado,Long>{
+	
+	@Query("SELECT p FROM Empleado p WHERE"
+			+"CONCAT(p.primerApellido,p.segundoApellido,p.primerNombre,p.segundoNombre,p.paisEmpleo,p.identificacion,p.numeroIdenti,p.correo)"
+			+"LIKE %?1%")
+	public Page<Empleado> findAll(String keyword, Pageable pageable);
+
+}

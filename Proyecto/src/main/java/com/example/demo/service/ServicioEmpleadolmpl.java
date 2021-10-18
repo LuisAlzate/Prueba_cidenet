@@ -47,17 +47,22 @@ public class ServicioEmpleadolmpl implements ServicioEmpleado{
 		}
 		return empleado;				
 	}
+	
 	@Override
 	public void deleteEmpleadoById(long id) {
 		this.repositorioempleados.deleteById(id);
 	}
 
 	@Override
-	public Page<Empleado> findPaginated(int pageNo, int pageSize,String sortField,String sortDirection) {
+	public Page<Empleado> findPaginated(int pageNo, int pageSize,String sortField,String sortDirection,String keyword) {
 		Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending():
 			Sort.by(sortField).descending();
 	
 		Pageable pageable = PageRequest.of(pageNo - 1, pageSize,sort);
-		return this.repositorioempleados.findAll(pageable);
+		
+		if(keyword != null) {
+			return repositorioempleados.findAll(keyword,pageable);
+		}
+		return repositorioempleados.findAll(pageable);
 	}
 }

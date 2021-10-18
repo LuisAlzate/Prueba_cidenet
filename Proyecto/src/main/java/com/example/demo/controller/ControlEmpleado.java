@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 import com.example.demo.model.Empleado;
 import com.example.demo.service.ServicioEmpleado;
 
@@ -28,10 +29,12 @@ public class ControlEmpleado {
 	// Muestra la lista de empleados.
 	@GetMapping("/")
 	public String viewHomePage(Model model) {
-		return findPaginated(1,"id","asc",model);
+		String keyword=null;
+		return findPaginated(1,"id","asc",keyword,model);
 		
 	}
 
+	//Genereo la pagina para agregar un nuevo usuario y lo relaciono con los valores de la tabla en "Empleados"
 	@GetMapping("/showNewEmployeeForm")
 	public String showNewEmployeeForm(Model model) {
 		Empleado empleado = new Empleado();
@@ -51,23 +54,37 @@ public class ControlEmpleado {
 		String ape2 = empleado.getPrimerApellido();
 		String ape = ape2.replaceAll("\\s+", "");
 		String pais = empleado.getPaisEmpleo();
-		String correoJs;
+		String correoJs, correoJsTemp;
 		
 		//Obtengo la hora de registro con las librerias de fecha
 		Date date = Calendar.getInstance().getTime();  
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
 		String strDate = dateFormat.format(date);  
-		strDate = "Actualizado el: "+dateFormat.format(date);
+		
+		//Pregenero el nombre del correo con el primer nombre y apellido.
+		correoJs=nombre+ "." + ape;
+		
+		//Subo los valores a la tabla "empleado" para generar la id de manera automatica.
+		servicioempleados.guardarEmpleado(empleado);
+
+		//Cargo los valores de la fecha y el correo pregenerado.
+		empleado.setFechaHora(strDate);
+		empleado.setCorreo(correoJs);
 		
 		
+		//Con la id generada se la cargo al correo.
+		nombre=nombre.toLowerCase();
+		ape=ape.toLowerCase();
 		correoJs=nombre+ "." + ape+"."+empleado.getId();
+		
 		//Valido tamaño del correo. (Por ahora el valor del string no puede ser menor al valor para cortarlo, tira error 500)
-//		if(correoJs.length()>10) {
-//			correoJs=correoJs.substring(0,10);
+//		if(correoJs.length()>300) {
+//			correoJs=correoJs.substring(0,300);
 //		}
 //		else {
 //			return correoJs;
-//		}		
+//		}	
+		
 		//valido donde esta ubicado el empleado para generar el dominio correspondiente. 
 		if (pais.equals("Colombia")) {
 
@@ -75,13 +92,12 @@ public class ControlEmpleado {
 		} else {
 			correoJs = correoJs +"@cidenet.com.us";
 		}
-		
-			
-		empleado.setFechaHora(strDate);
+		//Le cargo el correo completo con domino a la columna "correo"
 		empleado.setCorreo(correoJs);
 		
+		//Actualizo la tabla con el correo que incluye la Id.
 		servicioempleados.guardarEmpleado(empleado);
-			
+		
 		return "redirect:/";
 	}
 
@@ -97,6 +113,8 @@ public class ControlEmpleado {
 		String correoJs;
 		
 		//Actualizo el correo en caso de ser necesario.
+		nombre=nombre.toLowerCase();
+		ape=ape.toLowerCase();
 		correoJs=nombre+ "." + ape+"."+empleado.getId();
 		//Valido tamaño del correo. (Por ahora el valor del string no puede ser menor al valor para cortarlo, tira error 500)
 //		if(correoJs.length()>10) {
@@ -116,7 +134,7 @@ public class ControlEmpleado {
 		
 		//Obtengo la hora de registro con las librerias de fecha
 		Date date = Calendar.getInstance().getTime();  
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss");  
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
 		String strDate = dateFormat.format(date);  
 		//Especifico que es una actualizacion
 		strDate = "Actualizado el: "+dateFormat.format(date);
@@ -130,7 +148,7 @@ public class ControlEmpleado {
 		
 	}
 	
-	
+	//Genero la pagina para el formulario de actualizacion de un empleado ya creado.
 	@GetMapping("/showFormForUpdate/{id}")
 	public String showFormForUpdate(@PathVariable (value = "id") long id, Model model) {
 		
@@ -143,6 +161,7 @@ public class ControlEmpleado {
 		return "update_empleado";
 	}
 	
+	//Genero la opcion de poder eliminar el emepleado por su id.
 	@GetMapping("/deleteEmpleado/{id}")	
 	public String deleteEmpleado(@PathVariable (value = "id")long id) {
 	
@@ -153,14 +172,17 @@ public class ControlEmpleado {
 		
 	}
 	
-	@GetMapping("/page/{pageNo}/")
+	
+	//Aplico la paginacion y el sort para la tabla de datos de un tamaño de 10 elementos por pagina.
+	@GetMapping("/page/{pageNo}")
 	public String findPaginated(@PathVariable(value = "pageNo") int pageNo, 
 			@RequestParam("sortField") String sortField,
 			@RequestParam("sortDir") String sortDir,
+			@RequestParam("keyword")String keyword,
 			Model model) {
 		int pageSize =10;
 		
-		Page<Empleado> page = servicioempleados.findPaginated(pageNo, pageSize, sortField, sortDir);
+		Page<Empleado> page = servicioempleados.findPaginated(pageNo, pageSize, sortField, sortDir,keyword);
 		List<Empleado> listaEmpleados = page.getContent();
 		
 		model.addAttribute("currentPage", pageNo);
@@ -171,7 +193,8 @@ public class ControlEmpleado {
 		model.addAttribute("sorDir",sortDir);
 		model.addAttribute("reverseSortDir",sortDir.equals("asc") ? "desc" : "asc");
 		
-		
+		model.addAttribute("keyword",keyword);
+			
 		
 		model.addAttribute("listaEmpleados",listaEmpleados);
 		
